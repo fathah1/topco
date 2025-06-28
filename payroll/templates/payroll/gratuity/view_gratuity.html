@@ -1,0 +1,104 @@
+{% extends 'index.html' %} {% block content %} {% load i18n %}
+{% load static %}
+<meta name="htmx-config" content='{"debug":true}'>
+<style>
+    .oh-sticky-table__right {
+        position: sticky;
+        right: 0;
+        background-color: #fff;
+    }
+
+    .oh-sticky-table__top {
+        z-index: 12 !important;
+        top: 0;
+    }
+</style>
+
+<section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
+    <div class="oh-main__titlebar oh-main__titlebar--left">
+        <h1 class="oh-main__titlebar-title fw-bold">{% trans "Gratuity" %}</h1>
+        <a class="oh-main__titlebar-search-toggle" role="button" aria-label="Toggle Search"
+            @click="searchShow = !searchShow">
+            <ion-icon name="search-outline" class="oh-main__titlebar-serach-icon md hydrated" role="img"
+                aria-label="search outline"></ion-icon>
+        </a>
+    </div>
+
+</section>
+<div class="oh-wrapper">
+    <div class="oh-modal__dialog-body" id="individualPayslipModal">
+        <form  hx-get="{% url 'single-gratuity-view'  %}" hx-target="#objectDetailsModalTarget" class="oh-profile-section pt-1" id="gratuityCreateForm">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="oh-input__group">
+                        <label class="oh-input__label" for="{{individual_form.employee_id.id_for_label}}">{% trans "Employee" %}</label>
+                        {{individual_form.employee_id}} {{individual_form.employee_id.errors}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div id="contractStartDateDiv" class="mt-2"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="oh-input__group">
+                        <label class="oh-input__label" for="{{individual_form.end_date.id_for_label}}">{% trans "End Date" %}</label>
+                        {{individual_form.end_date}} {{individual_form.end_date.errors }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="oh-modal__dialog-footer p-0 pt-4">
+                    <input type="submit" value="Submit" class="oh-btn oh-btn--secondary oh-btn--shadow" />
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        $(document).ready(function () {
+            $("select").on("select2:select", function (e) {
+                $(this).closest("select")[0].dispatchEvent(new Event("change"));
+            });
+        });
+    </script>
+
+
+    <!-- <div id="payroll-deduction-container">
+        {% if deductions %}
+            {% if request.GET.view == "list" %}
+                {% include 'payroll/deduction/list_deduction.html' %}
+            {% else %}
+                {% include 'payroll/deduction/card_deduction.html' %}
+            {% endif %}
+        {% else %}
+            <main :class="sidebarOpen ? 'oh-main__sidebar-visible' : ''">
+                <div class="oh-wrapper">
+                    <div class="oh-404">
+                        <img style="width: 150px; height: 150px" src="{% static 'images/ui/deduction_icon.png' %}"
+                            class="oh-404__image mb-4" alt="Page not found. 404." />
+                        <h5 class="oh-404__subtitle">
+                            {% trans "There are currently no gratuities to consider." %}
+                        </h5>
+                    </div>
+                </div>
+            </main>
+        {% endif %}
+    </div>
+</div> -->
+
+<script>
+
+document.body.addEventListener("htmx:afterSwap", function(evt) {
+    if (evt.detail.target.id === "objectDetailsModalTarget") {
+        let modal = document.getElementById("objectDetailsModal");
+        if (modal) {
+            modal.style.display = "block"; // Show the modal
+        }
+    }
+});
+
+</script>
+{% endblock content %}
