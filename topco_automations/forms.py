@@ -1,5 +1,5 @@
 """
-terrain_automations/forms.py
+topco_automations/forms.py
 """
 
 from typing import Any
@@ -10,8 +10,8 @@ from django.utils.translation import gettext_lazy as _
 from base.forms import ModelForm
 from employee.filters import EmployeeFilter
 from employee.models import Employee
-from terrain_automations.methods.methods import generate_choices
-from terrain_automations.models import MODEL_CHOICES, MailAutomation
+from topco_automations.methods.methods import generate_choices
+from topco_automations.models import MODEL_CHOICES, MailAutomation
 from horilla_widgets.widgets.horilla_multi_select_field import HorillaMultiSelectField
 from horilla_widgets.widgets.select_widgets import HorillaMultiSelectWidget
 

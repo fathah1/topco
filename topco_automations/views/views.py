@@ -9,9 +9,9 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from horilla.decorators import login_required, permission_required
-from terrain_automations.methods.methods import generate_choices
-from terrain_automations.methods.serialize import serialize_form
-from terrain_automations.models import MailAutomation
+from topco_automations.methods.methods import generate_choices
+from topco_automations.methods.serialize import serialize_form
+from topco_automations.models import MailAutomation
 
 
 @login_required

@@ -176,7 +176,7 @@ def bulk_create_employee_import(success_lists):
         city = work_info["City"]
         qualification = work_info["Qualification"]
         experience = work_info["Experience"]
-        marital_status = work_info.get("Marital Status", "").lower()
+        # marital_status = work_info.get("Marital Status", "").lower()
         children = work_info["Children"]
         emergency_contact = work_info["Emergency Contact"]
         emergency_contact_relation = work_info["Emergency Contact Relation"]
@@ -196,12 +196,12 @@ def bulk_create_employee_import(success_lists):
             city=city,
             qualification=qualification,
             experience=experience, 
-            marital_status=marital_status,
+            # marital_status=marital_status,
             children=children,
             address=address,
             emergency_contact_name=emergency_contact_name,
             emergency_contact=emergency_contact,
-            emergency_contact_relation=emergency_contact_relation
+            emergency_contact_relation=emergency_contact_relation,
         )
         employee_obj_list.append(employee_obj)
     result = []
@@ -457,6 +457,7 @@ def bulk_create_work_info_import(success_lists):
     new_work_info_list = []
     update_work_info_list = []
 
+
     # Filtered data for required lookups
     badge_ids = [row["Badge id"] for row in success_lists]
     departments = set(row.get("Department") for row in success_lists)
@@ -466,12 +467,19 @@ def bulk_create_work_info_import(success_lists):
     employee_types = set(row.get("Employee Type") for row in success_lists)
     shifts = set(row.get("Shift") for row in success_lists)
     companies = set(row.get("Company") for row in success_lists)
+    
 
     # Bulk fetch related objects and reduce repeated DB calls
+
+    print("badge_ids - ", badge_ids);
+    print("departments - ", departments);
+
     existing_employees = {
         emp.badge_id: emp
         for emp in Employee.objects.filter(badge_id__in=badge_ids).only("badge_id")
     }
+
+    print("existing_employees - ", existing_employees);
 
     existing_employee_work_infos = {
         emp.employee_id: emp
@@ -479,6 +487,8 @@ def bulk_create_work_info_import(success_lists):
             employee_id__in=existing_employees.values()
         ).only("employee_id")
     }
+
+    print("existing_employee_work_infos - ", existing_employee_work_infos);
     
     existing_departments = {
         dep.department: dep
@@ -522,6 +532,7 @@ def bulk_create_work_info_import(success_lists):
         for comp in Company.objects.filter(company__in=companies).only("company")
     }
     reporting_manager_dict = optimize_reporting_manager_lookup(success_lists)
+
     for work_info in success_lists:
         email = work_info["Email"]
         badge_id = work_info["Badge id"]
@@ -545,23 +556,30 @@ def bulk_create_work_info_import(success_lists):
         location = work_info.get("Location")
 
         # Parsing dates and salary
+
         date_joining = (
             work_info["Date joining"]
             if not pd.isnull(work_info["Date joining"])
             else datetime.today()
         )
 
+        print("date_joining - ", date_joining);
+
         contract_end_date = (
             work_info["Contract End Date"]
             if not pd.isnull(work_info["Contract End Date"])
             else None
         )
+        print("contract_end_date - ", contract_end_date);
+
+        # annual_leave_date = clean_annual_leave_date(work_info.get("Annual Leave Date"))
 
         basic_salary = (
             convert_nan("Basic Salary", work_info)
             if type(convert_nan("Basic Salary", work_info)) is int
             else 0
         )
+        print("basic_salary - ", basic_salary);
 
         salary_hour = (
             convert_nan("Salary Hour", work_info)
@@ -569,11 +587,15 @@ def bulk_create_work_info_import(success_lists):
             else 0
         )
 
+        print("salary_hour - ", salary_hour);
+
         sponsor_company = (
             work_info["Sponsor Company"]
             if not pd.isnull(work_info["Sponsor Company"])
             else None
         )
+
+        print("sponsor_company - ", sponsor_company);
 
         emirates_id_expiry = (
             work_info["EID Expiry"]
@@ -581,6 +603,7 @@ def bulk_create_work_info_import(success_lists):
             else datetime.today()
         )
 
+        print("emirates_id_expiry - ", emirates_id_expiry);
 
         emirates_id_no = (
             work_info["EID No"]
@@ -588,11 +611,15 @@ def bulk_create_work_info_import(success_lists):
             else None
         )
 
+        print("emirates_id_no - ", emirates_id_no);
+
         visa_expiry = (
             work_info["Visa Expiry"]
             if not pd.isnull(work_info["Visa Expiry"])
             else datetime.today()
         )
+
+        print("visa_expiry - ", visa_expiry);
 
         visa_no = (
             work_info["Visa No"]
@@ -600,17 +627,19 @@ def bulk_create_work_info_import(success_lists):
             else None
         )
 
-        passport_expiry = (
-            work_info["Passport Expiry"]
-            if not pd.isnull(work_info["Passport Expiry"])
-            else datetime.today()
-        )
+        print("visa_no - ", visa_no);
 
-        passport_no = (
-            work_info["Passport No"]
-            if not pd.isnull(work_info["Passport No"])
-            else None
-        )
+        # passport_expiry = (
+        #     work_info["Passport Expiry"]
+        #     if not pd.isnull(work_info["Passport Expiry"])
+        #     else datetime.today()
+        # )
+
+        # passport_no = (
+        #     work_info["Passport No"]
+        #     if not pd.isnull(work_info["Passport No"])
+        #     else None
+        # )
 
 
         work_permit_expiry = (
@@ -619,11 +648,23 @@ def bulk_create_work_info_import(success_lists):
             else datetime.today()
         )
 
+        print("work_permit_expiry - ", work_permit_expiry);
+
+        annual_leave_date = (
+            work_info["Annual Leave Date"]
+            if not pd.isnull(work_info["Annual Leave Date"])
+            else None
+        )
+
+        print("annual_leave_date - ", annual_leave_date);
+
         work_permit_no = (
             work_info["Work Permit No"]
             if not pd.isnull(work_info["Work Permit No"])
             else None
         )
+
+        print("work_permit_no - ", work_permit_no);
 
         HRA = (
             work_info["HRA"]
@@ -631,17 +672,25 @@ def bulk_create_work_info_import(success_lists):
             else None
         )
 
+        print("HRA - ", HRA);
+
         other_allowances = (
             work_info["Other Allowances"]
             if not pd.isnull(work_info["Other Allowances"])
             else None
         )
 
+        print("other_allowances - ", other_allowances);
 
-        employee_obj = existing_employees.get(badge_id)
+
+        employee_obj = existing_employees.get(str(badge_id))
+        print("employee_obj - ", employee_obj);
         employee_work_info = existing_employee_work_infos.get(employee_obj)
+        print("employee_work_info - ", employee_work_info);
 
         if employee_work_info is None:
+
+           
             # Create a new instance
             employee_work_info = EmployeeWorkInformation(
                 employee_id=employee_obj,
@@ -655,37 +704,31 @@ def bulk_create_work_info_import(success_lists):
                 reporting_manager_id=reporting_manager_obj,
                 company_id=company_obj,
                 location=location,
-                date_joining=(
-                    date_joining if not pd.isnull(date_joining) else datetime.today()
-                ),
-                contract_end_date=(
-                    contract_end_date if not pd.isnull(contract_end_date) else None
-                ),
+                date_joining=(date_joining if not pd.isnull(date_joining) else datetime.today()),
+                contract_end_date=(contract_end_date if not pd.isnull(contract_end_date) else None),
                 basic_salary=basic_salary,
                 salary_hour=salary_hour,
                 sponsor_company=sponsor_company,
-                emirates_id_expiry=(
-                    emirates_id_expiry if not pd.isnull(emirates_id_expiry) else None
-                ),
+                emirates_id_expiry=(emirates_id_expiry if not pd.isnull(emirates_id_expiry) else None),
                 emirates_id_no=emirates_id_no,
-                visa_expiry=(
-                    visa_expiry if not pd.isnull(visa_expiry) else None
-                ),
+                visa_expiry=(visa_expiry if not pd.isnull(visa_expiry) else None),
                 visa_no=visa_no,
-                passport_expiry=(
-                    passport_expiry if not pd.isnull(passport_expiry) else None
-                ),
-                passport_no=passport_no,
-                work_permit_expiry=(
-                    work_permit_expiry if not pd.isnull(work_permit_expiry) else None
-                ),
+                # passport_expiry=(
+                #     passport_expiry if not pd.isnull(passport_expiry) else None
+                # ),
+                # passport_no=passport_no,
+                work_permit_expiry=(work_permit_expiry if not pd.isnull(work_permit_expiry) else None),
                 work_permit_no=work_permit_no,
                 HRA=HRA,
                 other_allowances=other_allowances,
+                annual_leave_date=annual_leave_date,
             )
+
+            print("employee work info - ", employee_work_info)
             new_work_info_list.append(employee_work_info)
         else:
-            # Update the existing instance
+
+            print("here in else");
             employee_work_info.email = email
             employee_work_info.department_id = department_obj
             employee_work_info.job_position_id = job_position_obj
@@ -713,12 +756,15 @@ def bulk_create_work_info_import(success_lists):
                 date_joining if not pd.isnull(visa_expiry) else  None
             )
             employee_work_info.visa_no = visa_no
-            employee_work_info.passport_expiry = (
-                date_joining if not pd.isnull(passport_expiry) else  None
-            )
-            employee_work_info.passport_no = passport_no
+            # employee_work_info.passport_expiry = (
+            #     date_joining if not pd.isnull(passport_expiry) else  None
+            # )
+            # employee_work_info.passport_no = passport_no
             employee_work_info.work_permit_expiry = (
                 date_joining if not pd.isnull(work_permit_expiry) else  None
+            )
+            employee_work_info.annual_leave_date = (
+                date_joining if not pd.isnat(annual_leave_date) else  None
             )
             employee_work_info.work_permit_no = work_permit_no
             employee_work_info.HRA = HRA
@@ -726,8 +772,16 @@ def bulk_create_work_info_import(success_lists):
             update_work_info_list.append(employee_work_info)
 
     if new_work_info_list:
-        EmployeeWorkInformation.objects.bulk_create(new_work_info_list)
+        print("here in new work info list, new_work_info_list - ", new_work_info_list);
+        # EmployeeWorkInformation.objects.bulk_create(new_work_info_list)
+        for work_info_obj in new_work_info_list:
+            try:
+                work_info_obj.save()
+            except Exception as e:
+                print(f"❌ Error saving work info for {work_info_obj.employee_id}: {e}")
+
     if update_work_info_list:
+        print("here in updatework info list");
         EmployeeWorkInformation.objects.bulk_update(
             update_work_info_list,
             [
@@ -750,8 +804,8 @@ def bulk_create_work_info_import(success_lists):
                 "emirates_id_no",
                 "visa_expiry",
                 "visa_no",
-                "passport_expiry",
-                "passport_no",
+                # "passport_expiry",
+                # "passport_no",
                 "work_permit_expiry",
                 "work_permit_no",    
                 "HRA",

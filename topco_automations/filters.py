@@ -1,9 +1,9 @@
 """
-terrain_automations/filters.py
+topco_automations/filters.py
 """
 
 from horilla.filters import HorillaFilterSet, django_filters
-from terrain_automations.models import MailAutomation
+from topco_automations.models import MailAutomation
 
 
 class AutomationFilter(HorillaFilterSet):

@@ -50,8 +50,8 @@ APP_URLS = [
 APPS = [
     "base",
     "employee",
-    "terrain_documents",
-    "terrain_automations",
+    "topco_documents",
+    "topco_automations",
 ]
 
 NO_PERMISSION_MODALS = [

@@ -121,13 +121,13 @@ from horilla.group_by import group_by_queryset
 from horilla.horilla_settings import HORILLA_DATE_FORMATS
 from horilla.methods import get_horilla_model_class
 from horilla_audit.models import AccountBlockUnblock, HistoryTrackingFields
-from terrain_documents.forms import (
+from topco_documents.forms import (
     DocumentForm,
     DocumentRejectForm,
     DocumentRequestForm,
     DocumentUpdateForm,
 )
-from terrain_documents.models import Document, DocumentRequest
+from topco_documents.models import Document, DocumentRequest
 from notifications.signals import notify
 
 
@@ -430,7 +430,7 @@ def shift_tab(request, emp_id):
 
 
 @login_required
-@manager_can_enter("terrain_documents.view_documentrequest")
+@manager_can_enter("topco_documents.view_documentrequest")
 def document_request_view(request):
     """
     This function is used to view documents requests of employees.
@@ -446,7 +446,7 @@ def document_request_view(request):
     documents = Document.objects.filter(document_request_id__isnull=False)
     documents = filtersubordinates(
         request=request,
-        perm="terrain_documents.view_documentrequest",
+        perm="topco_documents.view_documentrequest",
         queryset=documents,
     )
     documents = group_by_queryset(
@@ -466,7 +466,7 @@ def document_request_view(request):
 
 @login_required
 @hx_request_required
-@manager_can_enter("terrain_documents.view_documentrequest")
+@manager_can_enter("topco_documents.view_documentrequest")
 def document_filter_view(request):
     """
     This method is used to filter employee.
@@ -499,7 +499,7 @@ def document_filter_view(request):
 
 @login_required
 @hx_request_required
-@manager_can_enter("terrain_documents.add_documentrequest")
+@manager_can_enter("topco_documents.add_documentrequest")
 def document_request_create(request):
     """
     This function is used to create document requests of an employee in employee requests view.
@@ -510,11 +510,11 @@ def document_request_create(request):
     Returns: return document_request_create_form template
     """
     form = DocumentRequestForm()
-    form = choosesubordinates(request, form, "terrain_documents.add_documentrequest")
+    form = choosesubordinates(request, form, "topco_documents.add_documentrequest")
     if request.method == "POST":
         form = DocumentRequestForm(request.POST)
         form = choosesubordinates(
-            request, form, "terrain_documents.add_documentrequest"
+            request, form, "topco_documents.add_documentrequest"
         )
         if form.is_valid():
             form = form.save()
@@ -544,7 +544,7 @@ def document_request_create(request):
 
 @login_required
 @hx_request_required
-@manager_can_enter("terrain_documents.change_documentrequest")
+@manager_can_enter("topco_documents.change_documentrequest")
 def document_request_update(request, id):
     """
     This function is used to update document requests of an employee in employee requests view.
@@ -578,7 +578,7 @@ def document_request_update(request, id):
 
 @login_required
 @hx_request_required
-@owner_can_enter("terrain_documents.view_document", Employee)
+@owner_can_enter("topco_documents.view_document", Employee)
 def document_tab(request, emp_id):
     """
     This function is used to view documents tab of an employee in employee individual
@@ -604,7 +604,7 @@ def document_tab(request, emp_id):
 
 @login_required
 @hx_request_required
-@owner_can_enter("terrain_documents.add_document", Employee)
+@owner_can_enter("topco_documents.add_document", Employee)
 def document_create(request, emp_id):
     """
     This function is used to create documents from employee individual & profile view.
@@ -666,7 +666,7 @@ def document_delete(request, id):
     """
     try:
         document = Document.objects.filter(id=id)
-        if not request.user.has_perm("terrain_documents.delete_document"):
+        if not request.user.has_perm("topco_documents.delete_document"):
             document = document.filter(
                 employee_id__employee_user_id=request.user
             ).exclude(document_request_id__isnull=False)
@@ -764,9 +764,7 @@ def view_file(request, id):
     }
     if document_obj.document:
         file_path = document_obj.document.path
-        file_extension = os.path.splitext(file_path)[1][
-            1:
-        ].lower()  # Get the lowercase file extension
+        file_extension = "xlsx"
 
         content_type = get_content_type(file_extension)
 
@@ -807,7 +805,7 @@ def get_content_type(file_extension):
 
 @login_required
 @hx_request_required
-@manager_can_enter("terrain_documents.add_document")
+@manager_can_enter("topco_documents.add_document")
 def document_approve(request, id):
     """
     This function used to view the approve uploaded document.
@@ -832,7 +830,7 @@ def document_approve(request, id):
 
 @login_required
 @hx_request_required
-@manager_can_enter("terrain_documents.add_document")
+@manager_can_enter("topco_documents.add_document")
 def document_reject(request, id):
     """
     This function used to view the reject uploaded document.
@@ -867,7 +865,7 @@ def document_reject(request, id):
 
 
 @login_required
-@manager_can_enter("terrain_documents.add_document")
+@manager_can_enter("topco_documents.add_document")
 def document_bulk_approve(request):
     """
     This function used to view the approve uploaded document.
@@ -888,7 +886,7 @@ def document_bulk_approve(request):
 
 
 @login_required
-@manager_can_enter("terrain_documents.add_document")
+@manager_can_enter("topco_documents.add_document")
 def document_bulk_reject(request):
     """
     This function used to view the reject uploaded document.
@@ -2449,18 +2447,18 @@ def work_info_import(request):
             "Employee Type",
             "Reporting Manager",
             "Company",
-            "Sponsor Company",
             "Location",
             "Date joining",
             "Contract End Date",
             "Basic Salary",
             "Salary Hour",
+            "Sponsor Company",
             "EID Expiry",
             "EID No",
             "Visa Expiry",
             "Visa No",
-            "Passport Expiry",
-            "Passport No",
+            # "Passport Expiry",
+            # "Passport No",
             "Work Permit Expiry",
             "Work Permit No",
             "HRA",
@@ -2471,11 +2469,13 @@ def work_info_import(request):
             "City",
             "Qualification",
             "Experience",
+            "Marital Status",
             "Children",
             "Emergency Contact",
             "Emergency Contact Relation",
             "Address",
             "Emergency Contact Name",
+            "Annual Leave Date",
         ]
     )
     error_data = {
@@ -2524,7 +2524,8 @@ def work_info_import(request):
         success_lists = []
         error_occured = False
         file = request.FILES["file"]
-        file_extension = file.name.split(".")[-1].lower()
+        file_extension = "xlsx"
+
         data_frame = (
             pd.read_csv(file) if file_extension == "csv" else pd.read_excel(file)
         )
@@ -2554,6 +2555,7 @@ def work_info_import(request):
                 try:
                     if pd.isna(email) or not re.match(pattern, email):
                         work_info["Email Error"] = f"Invalid Email address"
+                        print("here in error1")
                         error = True
                 except:
                     error = True
@@ -2563,20 +2565,24 @@ def work_info_import(request):
                     pd.to_numeric(basic_salary)
                 except ValueError:
                     work_info["Basic Salary Error"] = f"Basic Salary must be a number"
+                    print("here in error2")
                     error = True
 
                 try:
                     pd.to_numeric(salary_hour)
                 except ValueError:
                     work_info["Salary Hour Error"] = f"Salary Hour must be a number"
+                    print("here in error3")
                     error = True
 
                 if pd.isna(first_name):
                     work_info["First Name error"] = f"First Name can't be empty"
+                    print("here in error4")
                     error = True
 
                 if pd.isna(phone):
                     work_info["Phone error"] = f"Phone Number can't be empty"
+                    print("here in error5")
                     error = True
 
                 experience_value = work_info.get("Experience", None)
@@ -2586,6 +2592,7 @@ def work_info_import(request):
                 children_value = work_info.get("Children", None)
                 if pd.isna(children_value) or children_value in ["", None]:  
                     work_info["Children"] = None
+
 
                 # experience_value = work_info.get("Experience", None)
                 # if pd.isna(experience_value) or experience_value in ["", None]:  
@@ -2610,6 +2617,7 @@ def work_info_import(request):
                     work_info["Joining Date Error"] = (
                         f"Invalid Date format. Please use the format YYYY-MM-DD"
                     )
+                    print("here in error7")
                     error = True
 
                 try:
@@ -2618,6 +2626,7 @@ def work_info_import(request):
                     work_info["Contract Error"] = (
                         f"Invalid Date format. Please use the format YYYY-MM-DD"
                     )
+                    print("here in error8")
                     error = True
 
 
@@ -2627,6 +2636,7 @@ def work_info_import(request):
                     work_info["Badge ID Error"] = (
                         f"An Employee with the badge ID already exists"
                     )
+                    print("here in error9")
                     error = True
                 else:
                     existing_badge_ids.add(badge_id)
@@ -2649,6 +2659,7 @@ def work_info_import(request):
                 logger.error(e)
 
         if create_work_info or not error_lists:
+            print("here in create work info")
             try:
                 users = bulk_create_user_import(success_lists)
                 employees = bulk_create_employee_import(success_lists)
@@ -2664,6 +2675,7 @@ def work_info_import(request):
                 bulk_create_work_types(success_lists)
                 bulk_create_shifts(success_lists)
                 bulk_create_employee_types(success_lists)
+                print("here in create work info import")
                 bulk_create_work_info_import(success_lists)
 
             except Exception as e:

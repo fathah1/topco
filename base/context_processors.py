@@ -177,7 +177,7 @@ def white_labelling_company(request):
         }
     else:
         return {
-            "white_label_company_name": "Terrain-HRMS",
+            "white_label_company_name": "Topco-HRMS",
             "white_label_company": None,
         }
 

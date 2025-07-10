@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from terrain_documents.models import Document, DocumentRequest
+from topco_documents.models import Document, DocumentRequest
 
 # Register your models here.
 admin.site.register(Document)

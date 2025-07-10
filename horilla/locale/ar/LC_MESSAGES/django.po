@@ -1450,7 +1450,7 @@ msgstr "رقم طَرد "
 #: .\asset\templates\asset\asset_update.html:184
 #: .\asset\templates\request_allocation\asset_request_allocation_list.html:37
 #: .\employee\templates\tabs\htmx\document_form.html:46
-#: .\horilla_documents\models.py:78
+#: .\topco_documents\models.py:78
 msgid "Expiry Date"
 msgstr "تاريخ الانتهاء"
 
@@ -15620,7 +15620,7 @@ msgid "Title needs to be more than 3 letters"
 msgstr "يجب أن يكون العنوان أكثر من 3 أحرف"
 
 #: .\employee\templates\tabs\document_tab.html:84
-#: .\horilla_documents\models.py:77
+#: .\topco_documents\models.py:77
 #, fuzzy
 #| msgid "Due Date"
 msgid "Issue Date"
@@ -17073,27 +17073,27 @@ msgstr ""
 msgid "Gdrive Backup Automation Removed Successfully."
 msgstr "تم تحديث معلومات العمل بنجاح"
 
-#: .\horilla_documents\models.py:80
+#: .\topco_documents\models.py:80
 #, fuzzy
 #| msgid "Notify Before(days)"
 msgid "Notify Before"
 msgstr "الإخطار قبل (أيام)"
 
-#: .\horilla_documents\models.py:82
+#: .\topco_documents\models.py:82
 msgid "Is Digital Asset"
 msgstr ""
 
-#: .\horilla_documents\models.py:95 .\recruitment\models.py:1028
+#: .\topco_documents\models.py:95 .\recruitment\models.py:1028
 msgid "Title must be at least 3 characters"
 msgstr "يجب أن يتكون العنوان من 3 أحرف على الأقل"
 
-#: .\horilla_documents\models.py:103 .\recruitment\models.py:1036
+#: .\topco_documents\models.py:103 .\recruitment\models.py:1036
 #, fuzzy
 #| msgid "File size exceeds the limit. Maximum size is 5 MB"
 msgid "File size exceeds the limit"
 msgstr "حجم الملف يتجاوز الحد الأقصى. الحد الأقصى للحجم هو 5 ميغابايت"
 
-#: .\horilla_documents\models.py:111 .\recruitment\models.py:1044
+#: .\topco_documents\models.py:111 .\recruitment\models.py:1044
 msgid "Please upload {} file only."
 msgstr ""
 

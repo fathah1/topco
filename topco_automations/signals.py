@@ -41,8 +41,8 @@ def start_automation():
     Automation signals
     """
     from base.models import HorillaMailTemplate
-    from terrain_automations.methods.methods import get_model_class, split_query_string
-    from terrain_automations.models import MailAutomation
+    from topco_automations.methods.methods import get_model_class, split_query_string
+    from topco_automations.models import MailAutomation
 
     @receiver(post_delete, sender=MailAutomation)
     @receiver(post_save, sender=MailAutomation)
@@ -272,7 +272,7 @@ def send_automated_mail(
     instance,
     previous_instance,
 ):
-    from terrain_automations.methods.methods import evaluate_condition, operator_map
+    from topco_automations.methods.methods import evaluate_condition, operator_map
     from horilla_views.templatetags.generic_template_filters import getattribute
 
     applicable = False
@@ -344,7 +344,7 @@ def send_mail(request, automation, instance):
     """
     from base.backends import ConfiguredEmailBackend
     from base.methods import eval_validate, generate_pdf
-    from terrain_automations.methods.methods import (
+    from topco_automations.methods.methods import (
         get_model_class,
         get_related_field_model,
     )

@@ -18,7 +18,7 @@ from base.methods import filtersubordinatesemployeemodel
 from employee.models import DisciplinaryAction, Employee, Policy
 from horilla.filters import FilterSet, HorillaFilterSet, filter_by_name
 from horilla.horilla_middlewares import _thread_locals
-from terrain_documents.models import Document
+from topco_documents.models import Document
 from horilla_views.templatetags.generic_template_filters import getattribute
 
 

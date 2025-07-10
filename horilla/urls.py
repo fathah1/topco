@@ -33,7 +33,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("base.urls")),
-    path("", include("terrain_automations.urls")),
+    path("", include("topco_automations.urls")),
     path("", include("horilla_views.urls")),
     path("employee/", include("employee.urls")),
     path("horilla-widget/", include("horilla_widgets.urls")),

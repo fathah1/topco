@@ -54,9 +54,7 @@ def generate_groups(request, groupers, queryset, page_name, group_field, is_fk_f
     return groups
 
 
-def group_by_queryset(
-    queryset, group_field, page=None, page_name="page", records_per_page=10
-):
+def group_by_queryset(queryset, group_field, page=None, page_name="page", records_per_page=10):
     """
     This method is used to make group-by and split groups by nested pagination
     """
@@ -82,14 +80,7 @@ def group_by_queryset(
             model_copy = field_obj.related_model
         if model_copy:
             groupers = model_copy.objects.all()
-            groups = generate_groups(
-                request,
-                groupers,
-                queryset,
-                page_name,
-                group_field,
-                is_fk_field=True,
-            )
+            groups = generate_groups(request,groupers,queryset,page_name,group_field,is_fk_field=True,)
         else:
             groupers = [
                 item

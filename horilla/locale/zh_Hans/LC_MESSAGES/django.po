@@ -1373,7 +1373,7 @@ msgstr "批次編號"
 #: asset/templates/asset/asset_update.html:184
 #: asset/templates/request_allocation/asset_request_allocation_list.html:37
 #: employee/templates/tabs/htmx/document_form.html:46
-#: horilla_documents/models.py:77
+#: topco_documents/models.py:77
 msgid "Expiry Date"
 msgstr "到期日"
 
@@ -14804,7 +14804,7 @@ msgstr "目前没有合同。"
 msgid "Title needs to be more than 3 letters"
 msgstr "标题需超过3个字符"
 
-#: employee/templates/tabs/document_tab.html:84 horilla_documents/models.py:76
+#: employee/templates/tabs/document_tab.html:84 topco_documents/models.py:76
 msgid "Issue Date"
 msgstr "签发日期"
 
@@ -16151,23 +16151,23 @@ msgstr "此处选中的员工将作为抄送接收邮件。"
 msgid "Not Added"
 msgstr "未添加"
 
-#: horilla_documents/models.py:79
+#: topco_documents/models.py:79
 msgid "Notify Before"
 msgstr "提前通知"
 
-#: horilla_documents/models.py:82
+#: topco_documents/models.py:82
 msgid "Is Digital Asset"
 msgstr "是否为数字资产"
 
-#: horilla_documents/models.py:96 recruitment/models.py:1036
+#: topco_documents/models.py:96 recruitment/models.py:1036
 msgid "Title must be at least 3 characters"
 msgstr "标题至少需要3个字符"
 
-#: horilla_documents/models.py:104 recruitment/models.py:1044
+#: topco_documents/models.py:104 recruitment/models.py:1044
 msgid "File size exceeds the limit"
 msgstr "文件大小超出限制"
 
-#: horilla_documents/models.py:112 recruitment/models.py:1052
+#: topco_documents/models.py:112 recruitment/models.py:1052
 msgid "Please upload {} file only."
 msgstr "请仅上传 {} 文件。"
 

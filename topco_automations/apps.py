@@ -1,11 +1,11 @@
 from django.apps import AppConfig
 
-from terrain_automations.signals import start_automation
+from topco_automations.signals import start_automation
 
 
 class HorillaAutomationConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "terrain_automations"
+    name = "topco_automations"
 
     def ready(self) -> None:
         ready = super().ready()
@@ -13,8 +13,8 @@ class HorillaAutomationConfig(AppConfig):
 
             from base.templatetags.horillafilters import app_installed
             from employee.models import Employee
-            from terrain_automations.methods.methods import get_related_models
-            from terrain_automations.models import MODEL_CHOICES
+            from topco_automations.methods.methods import get_related_models
+            from topco_automations.models import MODEL_CHOICES
 
             recruitment_installed = False
             if app_installed("recruitment"):

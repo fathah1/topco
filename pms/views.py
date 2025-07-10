@@ -43,8 +43,8 @@ from horilla.decorators import (
     permission_required,
 )
 from horilla.group_by import group_by_queryset
-from terrain_automations.methods.methods import generate_choices
-from terrain_automations.methods.serialize import serialize_form
+from topco_automations.methods.methods import generate_choices
+from topco_automations.methods.serialize import serialize_form
 from notifications.signals import notify
 from pms.filters import (
     ActualKeyResultFilter,

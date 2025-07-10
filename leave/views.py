@@ -23,6 +23,11 @@ from django.utils.translation import gettext as __
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
+from django.db.models import OuterRef, Subquery, DateField
+from leave.models import LeaveRequest
+
+
+
 from base.filters import PenaltyFilter
 from base.forms import PenaltyAccountForm
 from base.methods import (
@@ -578,9 +583,7 @@ def leave_request_view(request):
     previous_data = request.GET.urlencode()
     data_dict = parse_qs(previous_data)
     get_key_instances(LeaveRequest, data_dict)
-    return render(
-        request,
-        "leave/leave_request/request_view.html",
+    return render(request, "leave/leave_request/request_view.html",
         {
             "leave_requests": page_obj,
             "pd": previous_data,
@@ -1429,6 +1432,54 @@ def leave_assign_filter(request):
     )
 
 
+def annual_leave_tracking_filter(request):
+    queryset = AvailableLeave.objects.all()
+    assign_form = AssignLeaveForm()
+    queryset = filtersubordinates(request, queryset, "leave.view_availableleave")
+    assigned_leave_filter = AssignedLeaveFilter(request.GET, queryset).qs
+    previous_data = request.GET.urlencode()
+    field = request.GET.get("field")
+    page_number = request.GET.get("page")
+    template = ("leave/annual_leave_tracking/assigned_leave.html",)
+    available_leaves = assigned_leave_filter.order_by("-id")
+    if request.GET.get("sortby"):
+        available_leaves = sortby(request, available_leaves, "sortby")
+        available_leave_ids = json.dumps(
+            [instance.id for instance in paginator_qry(available_leaves, None)]
+        )
+    if field != "" and field is not None:
+        page_obj = group_by_queryset(available_leaves, field, page_number)
+        list_values = [entry["list"] for entry in page_obj]
+        id_list = []
+        for value in list_values:
+            for instance in value.object_list:
+                id_list.append(instance.id)
+        available_leave_ids = json.dumps(list(id_list))
+        template = "leave/annual_leave_tracking/group_by.html"
+    else:
+        available_leave_ids = json.dumps(
+            [instance.id for instance in paginator_qry(available_leaves, None)]
+        )
+        page_obj = paginator_qry(available_leaves, page_number)
+
+    data_dict = parse_qs(previous_data)
+    get_key_instances(AvailableLeave, data_dict)
+    return render(
+        request,
+        template,
+        {
+            "available_leaves": page_obj,
+            "pd": previous_data,
+            "filter_dict": data_dict,
+            "field": field,
+            "assign_form": assign_form,
+            "available_leave_ids": available_leave_ids,
+        },
+    )
+
+
+
+
 @login_required
 @hx_request_required
 @manager_can_enter("leave.add_availableleave")
@@ -1827,6 +1878,96 @@ def restrict_view(request):
             "pd": previous_data,
         },
     )
+
+
+
+
+
+def annual_leave_tracking_view(request):
+ 
+
+    #queryset = filtersubordinates(request,AvailableLeave.objects.filter(leave_type_id__name__iexact="Annual Leave"));
+
+    queryset = filtersubordinates(
+        request,
+        AvailableLeave.objects.filter(leave_type_id__name__iexact="Annual Leave").select_related("employee_id")
+    )
+
+    latest_leave = LeaveRequest.objects.filter(
+        employee_id=OuterRef("employee_id")
+    ).order_by("-start_date")
+
+
+    queryset = queryset.annotate(
+        latest_start_date=Subquery(latest_leave.values("start_date")[:1]),
+        latest_end_date=Subquery(latest_leave.values("end_date")[:1]),
+    )
+
+
+
+
+    employee_id = request.GET.get("employee_id");
+    mode = request.GET.get("mode", "")
+
+    if employee_id:
+        queryset = queryset.filter(employee_id=employee_id)
+
+    today = date.today()
+    thirty_days_later = today + timedelta(days=30)
+
+
+    if mode == "upcoming_leaves":
+        queryset = queryset.filter(
+            employee_id__employee_work_info__annual_leave_date__gte=today,
+            employee_id__employee_work_info__annual_leave_date__lte=thirty_days_later
+        )
+
+
+
+
+
+    # # Optional: do something with `mode` (e.g., show only upcoming) fix this as required
+    #     if mode == "upcoming_leaves":
+    #         queryset = queryset.filter(to_date__gte=timezone.now().date())
+
+    
+    previous_data = request.GET.urlencode() or "field=leave_type_id"
+    field = request.GET.get("field", "leave_type_id")
+    page_number = request.GET.get("page")
+
+    # annual_leave_type = LeaveType.objects.get(name__iexact='annual leave')  
+    # available_leaves = AvailableLeave.objects.filter(leave_type_id=annual_leave_type)
+
+
+
+    # Paginate and group queryset by field
+    page_obj = group_by_queryset(queryset.order_by("-id"), field, page_number)
+
+    available_leave_ids = json.dumps(
+        [instance.id for entry in page_obj for instance in entry["list"].object_list]
+    )
+
+    # Setting a condition for the template
+    request.GET = request.GET.copy()
+    # request.GET["field"] = True
+
+    return render( request,"leave/annual_leave_tracking/annual_leave_tracking.html",{
+            "employee_id": employee_id,
+            "mode": mode, 
+            "available_leaves": page_obj,
+            'employee_list': Employee.objects.all(),
+            # "f": AnnualLeaveTrackingFilter(),
+            "pd": previous_data,
+            "filter_dict": parse_qs(previous_data),
+            # "gp_fields": LeaveAssignReGroup.fields,
+            "assign_form": AnnualLeaveTrackingForm(),
+            "available_leave_ids": available_leave_ids,
+        },
+    )
+
+
+
+
 
 
 @login_required

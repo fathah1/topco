@@ -26,7 +26,7 @@ from employee.views import work_info_export, work_info_import
 from horilla.decorators import owner_can_enter
 from horilla_api.api_decorators.base.decorators import permission_required
 from horilla_api.api_methods.employee.methods import get_next_badge_id
-from terrain_documents.models import Document, DocumentRequest
+from topco_documents.models import Document, DocumentRequest
 from notifications.signals import notify
 
 from ...api_decorators.base.decorators import (
@@ -700,7 +700,7 @@ class DocumentRequestAPIView(APIView):
             serializer = DocumentRequestSerializer(page, many=True)
             return pagination.get_paginated_response(serializer.data)
 
-    @manager_permission_required("horilla_documents.add_documentrequests")
+    @manager_permission_required("topco_documents.add_documentrequests")
     def post(self, request):
         serializer = DocumentRequestSerializer(data=request.data)
         if serializer.is_valid():
@@ -725,7 +725,7 @@ class DocumentRequestAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @manager_permission_required("horilla_documents.change_documentrequests")
+    @manager_permission_required("topco_documents.change_documentrequests")
     def put(self, request, pk):
         document_request = self.get_object(pk)
         serializer = DocumentRequestSerializer(document_request, data=request.data)
@@ -767,7 +767,7 @@ class DocumentAPIView(APIView):
             return paginator.get_paginated_response(serializer.data)
 
     @manager_or_owner_permission_required(
-        DocumentRequest, "horilla_documents.add_document"
+        DocumentRequest, "topco_documents.add_document"
     )
     def post(self, request):
         serializer = DocumentSerializer(data=request.data)
@@ -791,7 +791,7 @@ class DocumentAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @method_decorator(owner_can_enter("horilla_documents.change_document", Employee))
+    @method_decorator(owner_can_enter("topco_documents.change_document", Employee))
     def put(self, request, pk):
         document = self.get_object(pk)
         serializer = DocumentSerializer(document, data=request.data)
@@ -800,7 +800,7 @@ class DocumentAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @method_decorator(owner_can_enter("horilla_documents.delete_document", Employee))
+    @method_decorator(owner_can_enter("topco_documents.delete_document", Employee))
     def delete(self, request, pk):
         document = self.get_object(pk)
         document.delete()
@@ -810,7 +810,7 @@ class DocumentAPIView(APIView):
 class DocumentRequestApproveRejectView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @manager_permission_required("horilla_documents.add_document")
+    @manager_permission_required("topco_documents.add_document")
     def post(self, request, id, status):
         document = Document.objects.filter(id=id).first()
         document.status = status
@@ -821,7 +821,7 @@ class DocumentRequestApproveRejectView(APIView):
 class DocumentBulkApproveRejectAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @manager_permission_required("horilla_documents.add_document")
+    @manager_permission_required("topco_documents.add_document")
     def put(self, request):
         ids = request.data.get("ids", None)
         status = request.data.get("status", None)

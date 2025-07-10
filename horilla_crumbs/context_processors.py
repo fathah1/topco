@@ -70,6 +70,7 @@ sidebar_urls = [
     "leave-allocation-request-view",
     "type-view",
     "assign-view",
+    "annual-leave-tracking-view",
     "request-view",
     "holiday-view",
     "company-leave-view",

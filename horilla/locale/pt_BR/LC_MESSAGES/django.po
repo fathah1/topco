@@ -1377,7 +1377,7 @@ msgstr "Número de Lote"
 #: asset/templates/asset/asset_update.html:184
 #: asset/templates/request_allocation/asset_request_allocation_list.html:37
 #: employee/templates/tabs/htmx/document_form.html:46
-#: horilla_documents/models.py:77
+#: topco_documents/models.py:77
 msgid "Expiry Date"
 msgstr "Expiry Date"
 
@@ -14962,7 +14962,7 @@ msgstr "Neste momento não há contratos."
 msgid "Title needs to be more than 3 letters"
 msgstr "O título precisa ter mais de 3 letras"
 
-#: employee/templates/tabs/document_tab.html:84 horilla_documents/models.py:76
+#: employee/templates/tabs/document_tab.html:84 topco_documents/models.py:76
 msgid "Issue Date"
 msgstr "Data de emissão"
 
@@ -16357,23 +16357,23 @@ msgstr "Os funcionários selecionados aqui receberão o e-mail como Cc."
 msgid "Not Added"
 msgstr "Não Adicionado"
 
-#: horilla_documents/models.py:79
+#: topco_documents/models.py:79
 msgid "Notify Before"
 msgstr "Notificar antes"
 
-#: horilla_documents/models.py:82
+#: topco_documents/models.py:82
 msgid "Is Digital Asset"
 msgstr "É um ativo digital"
 
-#: horilla_documents/models.py:96 recruitment/models.py:1036
+#: topco_documents/models.py:96 recruitment/models.py:1036
 msgid "Title must be at least 3 characters"
 msgstr "Título deve ter pelo menos 3 caracteres"
 
-#: horilla_documents/models.py:104 recruitment/models.py:1044
+#: topco_documents/models.py:104 recruitment/models.py:1044
 msgid "File size exceeds the limit"
 msgstr "O tamanho do arquivo excede o limite"
 
-#: horilla_documents/models.py:112 recruitment/models.py:1052
+#: topco_documents/models.py:112 recruitment/models.py:1052
 msgid "Please upload {} file only."
 msgstr "Por favor, carregue somente {} arquivos."
 

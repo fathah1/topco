@@ -1450,7 +1450,7 @@ msgstr "Chargen Nr."
 #: .\asset\templates\asset\asset_update.html:184
 #: .\asset\templates\request_allocation\asset_request_allocation_list.html:37
 #: .\employee\templates\tabs\htmx\document_form.html:46
-#: .\horilla_documents\models.py:78
+#: .\topco_documents\models.py:78
 msgid "Expiry Date"
 msgstr "Verfallsdatum"
 
@@ -16695,7 +16695,7 @@ msgid "Title needs to be more than 3 letters"
 msgstr ""
 
 #: .\employee\templates\tabs\document_tab.html:84
-#: .\horilla_documents\models.py:77
+#: .\topco_documents\models.py:77
 #, fuzzy
 #| msgid "Due Date"
 msgid "Issue Date"
@@ -18388,30 +18388,30 @@ msgstr ""
 msgid "Gdrive Backup Automation Removed Successfully."
 msgstr "Arbeitsinformationen erfolgreich aktualisiert"
 
-#: .\horilla_documents\models.py:80
+#: .\topco_documents\models.py:80
 #, fuzzy
 #| msgid "Notify Before(days)"
 msgid "Notify Before"
 msgstr "Benachrichtigen Sie im Voraus (Tage)"
 
-#: .\horilla_documents\models.py:82
+#: .\topco_documents\models.py:82
 msgid "Is Digital Asset"
 msgstr ""
 
-#: .\horilla_documents\models.py:95 .\recruitment\models.py:1028
+#: .\topco_documents\models.py:95 .\recruitment\models.py:1028
 #, fuzzy
 #| msgid "Password must contain at least 8 characters."
 msgid "Title must be at least 3 characters"
 msgstr "Passwort muss mindestens 8 Zeichen enthalten."
 
-#: .\horilla_documents\models.py:103 .\recruitment\models.py:1036
+#: .\topco_documents\models.py:103 .\recruitment\models.py:1036
 #, fuzzy
 #| msgid "File size exceeds the limit. Maximum size is 5 MB"
 msgid "File size exceeds the limit"
 msgstr ""
 "Die Dateigröße überschreitet den Grenzwert. Die maximale Größe beträgt 5 MB"
 
-#: .\horilla_documents\models.py:111 .\recruitment\models.py:1044
+#: .\topco_documents\models.py:111 .\recruitment\models.py:1044
 msgid "Please upload {} file only."
 msgstr ""
 

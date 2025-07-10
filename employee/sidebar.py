@@ -74,7 +74,7 @@ def profile_accessibility(request, submenu, user_perms, *args, **kwargs):
 
 def document_accessibility(request, submenu, user_perms, *args, **kwargs):
     return request.user.has_perm(
-        "terrain_documents.view_documentrequest"
+        "topco_documents.view_documentrequest"
     ) or is_reportingmanager(request.user)
 
 

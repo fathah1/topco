@@ -61,7 +61,7 @@ from horilla.decorators import (
     permission_required,
 )
 from horilla.group_by import group_by_queryset
-from terrain_documents.models import Document
+from topco_documents.models import Document
 from notifications.signals import notify
 from recruitment.auth import CandidateAuthenticationBackend
 from recruitment.decorators import (

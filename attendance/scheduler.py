@@ -21,7 +21,9 @@ def create_work_record():
 
     for employee in employees:
         try:
-            shift_schedule = employee.get_shift_schedule()
+            # shift_schedule = employee.get_shift_schedule()
+            shift_schedule = None
+            
             if shift_schedule is None:
                 continue
 

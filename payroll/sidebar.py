@@ -65,7 +65,6 @@ def allowance_accessibility(request, submenu, user_perms, *args, **kwargs):
 
 
 def deduction_accessibility(request, submenu, user_perms, *args, **kwargs):
-    print("here in accessibility")
     return request.user.has_perm("payroll.view_deduction")
 
 # def gratuity_accessibility(request, submenu, user_perms, *args, **kwargs):

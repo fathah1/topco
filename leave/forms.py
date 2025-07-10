@@ -1203,6 +1203,52 @@ class AssignLeaveForm(HorillaForm):
         self.fields["leave_type_id"].label = "Leave Type"
 
 
+class AnnualLeaveTrackingForm(HorillaForm):
+    """
+    Form for Payslip
+    """
+
+    leave_type_id = forms.ModelChoiceField(
+        queryset=LeaveType.objects.all(),
+        widget=forms.SelectMultiple(
+            attrs={"class": "oh-select oh-select-2 mb-2", "required": True}
+        ),
+        empty_label=None,
+        label="Leave Type",
+        required=False,
+    )
+    employee_id = HorillaMultiSelectField(
+        queryset=Employee.objects.all(),
+        widget=HorillaMultiSelectWidget(
+            filter_route_name="employee-widget-filter",
+            filter_class=EmployeeFilter,
+            filter_instance_contex_name="f",
+            filter_template_path="employee_filters.html",
+            required=True,
+        ),
+        label="Employee",
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        employee_id = cleaned_data.get("employee_id")
+        leave_type_id = cleaned_data.get("leave_type_id")
+
+        if not employee_id:
+            raise forms.ValidationError({"employee_id": "This field is required"})
+        if not leave_type_id:
+            raise forms.ValidationError({"leave_type_id": "This field is required"})
+        return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        reload_queryset(self.fields)
+        self.fields["employee_id"].widget.attrs.update(
+            {"required": True, "id": uuid.uuid4()}
+        ),
+        self.fields["leave_type_id"].label = "Leave Type"
+
+
 class LeaverequestcommentForm(ModelForm):
     """
     LeaverequestComment form

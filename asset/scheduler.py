@@ -52,7 +52,7 @@ def notify_expiring_documents():
     """
     from django.contrib.auth.models import User
 
-    from terrain_documents.models import Document
+    from topco_documents.models import Document
 
     today = date.today()
     documents = Document.objects.all()

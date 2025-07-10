@@ -1,5 +1,5 @@
 """
-terrain_automations/views/cbvs.py
+topco_automations/views/cbvs.py
 """
 
 from django.contrib import messages
@@ -8,9 +8,9 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _trans
 
 from horilla.decorators import login_required, permission_required
-from terrain_automations import models
-from terrain_automations.filters import AutomationFilter
-from terrain_automations.forms import AutomationForm
+from topco_automations import models
+from topco_automations.filters import AutomationFilter
+from topco_automations.forms import AutomationForm
 from horilla_views.generic.cbv import views
 
 
@@ -31,7 +31,7 @@ class AutomationSectionView(views.HorillaSectionView):
         "/automation/automation.js",
     ]
 
-    template_name = "terrain_automations/section_view.html"
+    template_name = "topco_automations/section_view.html"
 
 
 @method_decorator(login_required, name="dispatch")
@@ -69,7 +69,7 @@ class AutomationFormView(views.HorillaFormView):
     form_class = AutomationForm
     model = models.MailAutomation
     new_display_title = _trans("New Automation")
-    template_name = "terrain_automations/automation_form.html"
+    template_name = "topco_automations/automation_form.html"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

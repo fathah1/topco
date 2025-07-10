@@ -9,7 +9,7 @@ from employee.models import (
     EmployeeWorkInformation,
     Policy,
 )
-from terrain_documents.models import Document, DocumentRequest
+from topco_documents.models import Document, DocumentRequest
 
 from ...api_methods.employee.methods import get_next_badge_id
 

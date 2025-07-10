@@ -18,6 +18,7 @@ SUBMENUS = [
         "redirect": reverse("leave-dashboard"),
         "accessibility": "leave.sidebar.dashboard_accessibility",
     },
+    
     {
         "menu": trans("My Leave Requests"),
         "redirect": reverse("user-request-view"),
@@ -38,8 +39,14 @@ SUBMENUS = [
         "accessibility": "leave.sidebar.assign_accessibility",
     },
     {
+        "menu": "Annual Leave Tracking",
+        "redirect": reverse("annual-leave-tracking-view"),
+        "accessibility": "leave.sidebar.assign_accessibility",
+    },
+    {
         "menu": trans("Leave Allocation Request"),
         "redirect": reverse("leave-allocation-request-view"),
+        "accessibility": "leave.sidebar.assign_accessibility",
     },
     {
         "menu": trans("Holidays"),
@@ -55,7 +62,7 @@ SUBMENUS = [
         "menu": trans("Restrict Leaves"),
         "redirect": reverse("restrict-view"),
         "accessibility": "leave.sidebar.restrict_leave_accessibility",
-    },
+    }
 ]
 
 

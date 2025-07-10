@@ -448,6 +448,8 @@ def calculate_gratuity(date_joining, end_date, basic_pay, contract_type="unlimit
         end_date = datetime.strptime(end_date, "%Y-%m-%d")
 
     # Calculate total years of service
+
+    print("date joinging : " ,date_joining, "end_date",end_date);
     days_worked = (end_date - date_joining).days
     years_of_service = days_worked / 365
 

@@ -660,9 +660,15 @@ class EmployeeWorkInformation(models.Model):
         null=True, blank=True, verbose_name=_("Work Permit Expiry")
     )
 
-    passport_no = models.CharField(
-         max_length=254, null=True, blank=True, verbose_name=_("Passport No")
+    annual_leave_date = models.DateField(
+        null=True, blank=True, verbose_name=_("Annual Leave Date")
     )
+
+
+
+    # passport_no = models.CharField(
+    #      max_length=254, null=True, blank=True, verbose_name=_("Passport No")
+    # )
 
     passport_expiry = models.DateField(
         null=True, blank=True, verbose_name=_("Passport Expiry")
@@ -687,6 +693,7 @@ class EmployeeWorkInformation(models.Model):
         null=True, blank=True, verbose_name=_("EID Expiry")
     )
 
+  
     sponsor_company = models.CharField(max_length=254,blank=True, null=True,
     )
     
