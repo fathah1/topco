@@ -41,10 +41,9 @@ def leave_reset():
             leave_type.carryforward_expire_date
             and leave_type.carryforward_expire_date <= today_date
         ):
-            leave_type.carryforward_expire_date = leave_type.set_expired_date(
-                today_date
-            )
-            leave_type.save()
+            leave_type.carryforward_expire_date = leave_type.set_expired_date(today_date)
+
+        leave_type.save()
 
 
 if not any(

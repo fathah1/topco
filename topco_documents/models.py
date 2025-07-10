@@ -67,9 +67,7 @@ def document_request_m2m_changed(sender, instance, action, **kwargs):
 class Document(HorillaModel):
     title = models.CharField(max_length=250)
     employee_id = models.ForeignKey(Employee, on_delete=models.PROTECT)
-    document_request_id = models.ForeignKey(
-        DocumentRequest, on_delete=models.PROTECT, null=True
-    )
+    document_request_id = models.ForeignKey(DocumentRequest, on_delete=models.PROTECT, null=True)
     document = models.FileField(upload_to="employee/documents", null=True)
     status = models.CharField(choices=STATUS, max_length=10, default="requested")
     reject_reason = models.TextField(blank=True, null=True, max_length=255)
