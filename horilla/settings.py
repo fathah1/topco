@@ -25,15 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
     DEBUG=(bool, True),
-    SECRET_KEY=(
-        str,
-        "django-insecure-j8op9)1q8$1&0^s&p*_0%d#pr@w9qj@1o=3#@d=a(^@9@zd@%j",
-    ),
+    SECRET_KEY=(str,"django-insecure-j8op9)1q8$1&0^s&p*_0%d#pr@w9qj@1o=3#@d=a(^@9@zd@%j",),
     ALLOWED_HOSTS=(list, ["*"]),
-    CSRF_TRUSTED_ORIGINS = (list, [
-        "http://localhost:8000",
-        "https://65e1-2001-8f8-1269-3cbb-d3c-a14-22f0-4792.ngrok-free.app",
-    ]),
+    CSRF_TRUSTED_ORIGINS=(list, ["http://localhost:8000"]),
 )
 
 env.read_env(os.path.join(BASE_DIR, ".env"), overwrite=True)
@@ -128,7 +122,7 @@ DATABASE_DIR = Path.home() / "database"
 DATABASES = {
         "default": {
             "ENGINE": env("DB_ENGINE", default="django.db.backends.sqlite3"),
-            "NAME": os.getenv("DB_NAME", str(BASE_DIR / "DB_Horilla.sqlite3")),
+            "NAME": os.getenv("DB_NAME", str("/var/www/database/DB_Horilla.sqlite3")),
             "USER": env("DB_USER", default=""),
             "PASSWORD": env("DB_PASSWORD", default=""),
             "HOST": env("DB_HOST", default=""),
